@@ -4,7 +4,6 @@ import br.com.zup.anaminadakis.proposta.novaproposta.model.Proposta;
 import br.com.zup.anaminadakis.proposta.validacoes.CPFouCNPJ;
 import com.sun.istack.NotNull;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;

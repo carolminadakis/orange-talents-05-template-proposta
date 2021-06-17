@@ -8,6 +8,18 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       ZOOKEEPER_SYNC_LIMIT: 2
 
+  mysql:
+    image: mysql
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: proposta
+    ports:
+      - 3306:3306
+        #do lado esquerdo tem a porta do pc, e do lado direto do container
+    volumes:
+      - proposta_volume:/var/lib/mysql
+
   kafka:
     image: "confluentinc/cp-kafka:5.2.1"
     ports:
@@ -138,3 +150,4 @@ volumes:
   grafana-volume:
   prometheus-volume:
   postgres-volume:
+  proposta_volume:
