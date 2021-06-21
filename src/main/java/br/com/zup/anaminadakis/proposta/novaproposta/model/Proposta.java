@@ -1,5 +1,6 @@
 package br.com.zup.anaminadakis.proposta.novaproposta.model;
 
+import br.com.zup.anaminadakis.proposta.cartao.model.Cartao;
 import br.com.zup.anaminadakis.proposta.novaproposta.dto.StatusProposta;
 import br.com.zup.anaminadakis.proposta.validacoes.CPFouCNPJ;
 import com.sun.istack.NotNull;
@@ -41,6 +42,9 @@ public class Proposta {
     @Enumerated(EnumType.STRING)
     private StatusProposta statusProposta;
 
+    @OneToOne
+    private Cartao cartao;
+
     @Deprecated
     public Proposta() {
     }
@@ -80,6 +84,10 @@ public class Proposta {
     public StatusProposta getStatusProposta() {
         return statusProposta;
     }
+
+    public Cartao getCartao() { return cartao; }
+
+    public void setCartao(Cartao cartao) { this.cartao = cartao; }
 
     public void atualizaStatusProposta(StatusProposta restricao){
 
