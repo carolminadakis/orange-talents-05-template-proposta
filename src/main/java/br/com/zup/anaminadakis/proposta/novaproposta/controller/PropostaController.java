@@ -1,9 +1,14 @@
 package br.com.zup.anaminadakis.proposta.novaproposta.controller;
 
+import br.com.zup.anaminadakis.proposta.novaproposta.controller.request.AnalisePropostaRequest;
 import br.com.zup.anaminadakis.proposta.novaproposta.controller.request.PropostaRequest;
+import br.com.zup.anaminadakis.proposta.novaproposta.dto.AnalisaPropostaDto;
+import br.com.zup.anaminadakis.proposta.novaproposta.dto.StatusProposta;
 import br.com.zup.anaminadakis.proposta.novaproposta.model.Proposta;
 import br.com.zup.anaminadakis.proposta.novaproposta.repository.PropostaRepository;
+import br.com.zup.anaminadakis.proposta.novaproposta.swagger.ConsultaSwagger;
 import br.com.zup.anaminadakis.proposta.validacoes.ApiErroException;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +29,9 @@ public class PropostaController {
     @Autowired
     PropostaRepository propostaRepository;
 
+    @Autowired
+    ConsultaSwagger consultaSwagger;
+
     @PostMapping
     @Transactional
     public ResponseEntity<PropostaRequest> cadastro(@RequestBody @Valid PropostaRequest propostaRequest, UriComponentsBuilder uriBuilder) {
@@ -33,6 +41,17 @@ public class PropostaController {
         }
         //senão irá salvar no banco de dados
         Proposta proposta = propostaRequest.converte();
+        propostaRepository.save(proposta);
+
+        //analisa a proposta para torná-la elegível ou não, em caso de restrições
+        AnalisePropostaRequest analisePropostaRequest = new AnalisePropostaRequest(proposta.getDocumento(),
+                proposta.getNome(), proposta.getId());
+        try{
+            AnalisaPropostaDto analisaPropostaDto = consultaSwagger.analiseProposta(analisePropostaRequest);
+            proposta.atualizaStatusProposta(StatusProposta.ELEGIVEL);
+        }catch (FeignException.UnprocessableEntity ex) {
+            proposta.atualizaStatusProposta(StatusProposta.NAO_ELEGIVEL);
+        }
         propostaRepository.save(proposta);
 
 

@@ -1,5 +1,6 @@
 package br.com.zup.anaminadakis.proposta.novaproposta.model;
 
+import br.com.zup.anaminadakis.proposta.novaproposta.dto.StatusProposta;
 import br.com.zup.anaminadakis.proposta.validacoes.CPFouCNPJ;
 import com.sun.istack.NotNull;
 
@@ -37,6 +38,9 @@ public class Proposta {
     @Column(nullable = false)
     private BigDecimal salario;
 
+    @Enumerated(EnumType.STRING)
+    private StatusProposta statusProposta;
+
     @Deprecated
     public Proposta() {
     }
@@ -71,6 +75,15 @@ public class Proposta {
 
     public BigDecimal getSalario() {
         return salario;
+    }
+
+    public StatusProposta getStatusProposta() {
+        return statusProposta;
+    }
+
+    public void atualizaStatusProposta(StatusProposta restricao){
+
+        this.statusProposta = restricao;
     }
 
     @Override

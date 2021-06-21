@@ -1,5 +1,6 @@
 package br.com.zup.anaminadakis.proposta.novaproposta.controller.request;
 
+import br.com.zup.anaminadakis.proposta.novaproposta.dto.StatusProposta;
 import br.com.zup.anaminadakis.proposta.novaproposta.model.Proposta;
 import br.com.zup.anaminadakis.proposta.validacoes.CPFouCNPJ;
 import com.sun.istack.NotNull;
@@ -26,6 +27,8 @@ public class PropostaRequest {
     @NotNull
     @Positive
     private BigDecimal salario;
+
+    private StatusProposta statusProposta;
 
 
     public PropostaRequest(String nome, String email, String documento, String endereco, BigDecimal salario) {
@@ -58,5 +61,9 @@ public class PropostaRequest {
 
     public BigDecimal getSalario() {
         return salario;
+    }
+
+    public StatusProposta getStatusProposta() {
+        return statusProposta;
     }
 }
