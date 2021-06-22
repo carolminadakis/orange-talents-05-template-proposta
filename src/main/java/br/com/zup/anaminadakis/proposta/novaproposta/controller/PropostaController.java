@@ -1,5 +1,6 @@
 package br.com.zup.anaminadakis.proposta.novaproposta.controller;
 
+import br.com.zup.anaminadakis.proposta.novaproposta.controller.dto.PropostaDto;
 import br.com.zup.anaminadakis.proposta.novaproposta.controller.request.AnalisePropostaRequest;
 import br.com.zup.anaminadakis.proposta.novaproposta.controller.request.PropostaRequest;
 import br.com.zup.anaminadakis.proposta.novaproposta.dto.AnalisaPropostaDto;
@@ -8,19 +9,18 @@ import br.com.zup.anaminadakis.proposta.novaproposta.model.Proposta;
 import br.com.zup.anaminadakis.proposta.novaproposta.repository.PropostaRepository;
 import br.com.zup.anaminadakis.proposta.novaproposta.swagger.ConsultaSwagger;
 import br.com.zup.anaminadakis.proposta.validacoes.ApiErroException;
+import br.com.zup.anaminadakis.proposta.validacoes.TratamentoDeErro;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/propostas")
@@ -65,4 +65,14 @@ public class PropostaController {
         return propostaRepository.findByDocumento(documento).isPresent();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> acompanhamentoProposta(@PathVariable Long id) {
+        Optional<Proposta> proposta = propostaRepository.findById(id);
+
+        if (proposta.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body(new TratamentoDeErro("Proposta id", "ID de proposta inválido!"));
+        }
+        return ResponseEntity.ok(new PropostaDto(proposta.get()));
+    }
 }

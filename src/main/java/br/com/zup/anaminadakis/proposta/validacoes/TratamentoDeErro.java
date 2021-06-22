@@ -1,17 +1,21 @@
 package br.com.zup.anaminadakis.proposta.validacoes;
 
-import java.util.Collection;
-
 public class TratamentoDeErro {
 
 
-    private Collection<String> mensagens;
+    private String campo;
+    private String erro;
 
-    public TratamentoDeErro(Collection<String> mensagens) {
-        this.mensagens = mensagens;
+    public TratamentoDeErro(String campo, String erro) {
+        this.campo = campo;
+        this.erro = erro;
     }
 
-    public Collection<String> getMensagens() {
-        return mensagens;
+    public String getCampo() {
+        return campo;
+    }
+
+    public String getErro() {
+        return erro;
     }
 }
