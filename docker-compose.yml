@@ -20,6 +20,23 @@ services:
     volumes:
       - proposta_volume:/var/lib/mysql
 
+  proposta:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    container_name: proposta
+    ports:
+      - 8082:8080
+    restart: always
+    depends_on:
+      - mysql
+      - analise
+      - contas
+    environment:
+      ANALISE_FINANCEIRA_URL: http://analise:9999
+      CARTAO_URL: http://contas:8888
+      MYSQL_URL: jdbc:mysql://mysql:3306/proposta
+
   kafka:
     image: "confluentinc/cp-kafka:5.2.1"
     ports:
