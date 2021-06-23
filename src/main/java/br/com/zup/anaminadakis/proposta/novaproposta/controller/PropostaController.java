@@ -5,6 +5,7 @@ import br.com.zup.anaminadakis.proposta.novaproposta.controller.request.AnaliseP
 import br.com.zup.anaminadakis.proposta.novaproposta.controller.request.PropostaRequest;
 import br.com.zup.anaminadakis.proposta.novaproposta.dto.AnalisaPropostaDto;
 import br.com.zup.anaminadakis.proposta.novaproposta.dto.StatusProposta;
+import br.com.zup.anaminadakis.proposta.novaproposta.metricas.MetricasPropostas;
 import br.com.zup.anaminadakis.proposta.novaproposta.model.Proposta;
 import br.com.zup.anaminadakis.proposta.novaproposta.repository.PropostaRepository;
 import br.com.zup.anaminadakis.proposta.novaproposta.swagger.ConsultaSwagger;
@@ -32,6 +33,9 @@ public class PropostaController {
     @Autowired
     ConsultaSwagger consultaSwagger;
 
+    @Autowired
+    MetricasPropostas metricasPropostas;
+
     @PostMapping
     @Transactional
     public ResponseEntity<PropostaRequest> cadastro(@RequestBody @Valid PropostaRequest propostaRequest, UriComponentsBuilder uriBuilder) {
@@ -42,6 +46,7 @@ public class PropostaController {
         //senão irá salvar no banco de dados
         Proposta proposta = propostaRequest.converte();
         propostaRepository.save(proposta);
+        metricasPropostas.incrementa();
 
         //analisa a proposta para torná-la elegível ou não, em caso de restrições
         AnalisePropostaRequest analisePropostaRequest = new AnalisePropostaRequest(proposta.getDocumento(),
