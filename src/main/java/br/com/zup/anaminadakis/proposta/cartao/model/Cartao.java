@@ -1,9 +1,11 @@
 package br.com.zup.anaminadakis.proposta.cartao.model;
 
+import br.com.zup.anaminadakis.proposta.biometria.model.Biometria;
 import br.com.zup.anaminadakis.proposta.novaproposta.model.Proposta;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Cartao {
@@ -19,6 +21,9 @@ public class Cartao {
 
     @OneToOne(mappedBy = "cartao")
     private Proposta proposta;
+
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+    private List<Biometria> biometriaList;
 
     @Deprecated
     public Cartao() {

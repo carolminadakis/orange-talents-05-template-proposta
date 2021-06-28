@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
@@ -37,7 +36,6 @@ public class PropostaController {
     MetricasPropostas metricasPropostas;
 
     @PostMapping
-    @Transactional
     public ResponseEntity<PropostaRequest> cadastro(@RequestBody @Valid PropostaRequest propostaRequest, UriComponentsBuilder uriBuilder) {
     //caso o documento exista, vai jogar uma exceção
         if (documentoExistente(propostaRequest.getDocumento())) {
