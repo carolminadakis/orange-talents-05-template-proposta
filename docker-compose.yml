@@ -36,6 +36,8 @@ services:
       ANALISE_FINANCEIRA_URL: http://analise:9999
       CARTAO_URL: http://contas:8888
       MYSQL_URL: jdbc:mysql://mysql:3306/proposta
+      KEYCLOAK_ISSUER_URI: http://keycloak/auth/realms/nosso-cartao
+      KEYCLOAK_JWKS_URI: http://keycloak/auth/realms/nosso-cartao/protocol/openid-connect/certs
 
   kafka:
     image: "confluentinc/cp-kafka:5.2.1"
