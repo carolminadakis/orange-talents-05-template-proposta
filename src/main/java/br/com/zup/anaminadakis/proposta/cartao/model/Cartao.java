@@ -1,10 +1,13 @@
 package br.com.zup.anaminadakis.proposta.cartao.model;
 
 import br.com.zup.anaminadakis.proposta.biometria.model.Biometria;
+import br.com.zup.anaminadakis.proposta.bloqueio.model.Bloqueio;
+import br.com.zup.anaminadakis.proposta.cartao.status.StatusCartao;
 import br.com.zup.anaminadakis.proposta.novaproposta.model.Proposta;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,6 +28,12 @@ public class Cartao {
     @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
     private List<Biometria> biometriaList;
 
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+    private List<Bloqueio> bloqueios = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private StatusCartao statusCartao = StatusCartao.ATIVO;
+
     @Deprecated
     public Cartao() {
     }
@@ -38,27 +47,23 @@ public class Cartao {
         this.proposta = proposta;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getNumeroCartao() {
-        return numeroCartao;
-    }
-
-    public LocalDateTime getEmitidoEm() {
-        return emitidoEm;
-    }
-
-    public String getTitular() {
-        return titular;
-    }
-
-    public Integer getLimite() {
-        return limite;
-    }
-
     public Proposta getProposta() {
         return proposta;
     }
+
+
+    public void bloqueia(String ipAddress, String userAgent) {
+        this.statusCartao = StatusCartao.BLOQUEADO;
+        addBloqueio(new Bloqueio(ipAddress, userAgent, this));
+    }
+
+
+    public boolean estaBloqueado() {
+        return statusCartao.equals(StatusCartao.BLOQUEADO);
+    }
+
+    private void addBloqueio(Bloqueio bloqueio) {
+        this.bloqueios.add(bloqueio);
+    }
+
 }

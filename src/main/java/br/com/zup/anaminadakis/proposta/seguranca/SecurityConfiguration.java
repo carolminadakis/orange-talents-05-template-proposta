@@ -15,9 +15,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.headers().httpStrictTransportSecurity().disable();
         http.authorizeRequests(authorizeRequests ->
-                authorizeRequests.antMatchers(HttpMethod.GET, "/**")
-                        .hasAuthority("SCOPE_meu-primeiro-escopo")
-                        .anyRequest().authenticated())
+                authorizeRequests
+                     //   .antMatchers("propostas/**").hasAuthority("SCOPE_meu-primeiro-escopo")
+                      //  .antMatchers("cartoes/**").permitAll()
+                        //.anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
     }
