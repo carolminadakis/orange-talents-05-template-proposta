@@ -51,6 +51,17 @@ public class Cartao {
         return proposta;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getNumeroCartao() {
+        return numeroCartao;
+    }
+
+    public StatusCartao getStatusCartao() {
+        return statusCartao;
+    }
 
     public void bloqueia(String ipAddress, String userAgent) {
         this.statusCartao = StatusCartao.BLOQUEADO;
