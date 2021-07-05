@@ -4,6 +4,8 @@ package br.com.zup.anaminadakis.proposta.cartao.feign;
 import br.com.zup.anaminadakis.proposta.bloqueio.dto.InformaStatusCartao;
 import br.com.zup.anaminadakis.proposta.bloqueio.request.BloqueioRequest;
 import br.com.zup.anaminadakis.proposta.cartao.request.CartaoRequest;
+import br.com.zup.anaminadakis.proposta.viagem.dto.ResultadoAvisoViagem;
+import br.com.zup.anaminadakis.proposta.viagem.request.ViagemRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,4 +19,7 @@ public interface CartaoFeign {
 //essa variável de ambiente busca no properties
     @PostMapping("${cartao.bloqueio}")
     InformaStatusCartao notificaSistema(@PathVariable String id, @RequestBody BloqueioRequest bloqueioRequest);
+
+    @PostMapping("${avisos.cartoes}")
+    public ResultadoAvisoViagem notificaViagem(@PathVariable String id, @RequestBody ViagemRequest request);
 }

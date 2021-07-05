@@ -16,27 +16,27 @@ public class ViagemRequest {
 
     @NotNull
     @FutureOrPresent
-    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.STRING)
-    private LocalDate termino;
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    private LocalDate validoAte;
 
     @Deprecated
     public ViagemRequest() {
     }
 
-    public ViagemRequest(String destino, LocalDate termino) {
+    public ViagemRequest(String destino, LocalDate validoAte) {
         this.destino = destino;
-        this.termino = termino;
+        this.validoAte = validoAte;
     }
 
     public Viagem converte(String ipClient, String userAgent, Cartao cartao) {
-        return new Viagem(this.destino, this.termino, ipClient, userAgent, cartao);
+        return new Viagem(this.destino, this.validoAte, ipClient, userAgent, cartao);
     }
 
     public String getDestino() {
         return destino;
     }
 
-    public LocalDate getTermino() {
-        return termino;
+    public LocalDate getValidoAte() {
+        return validoAte;
     }
 }
