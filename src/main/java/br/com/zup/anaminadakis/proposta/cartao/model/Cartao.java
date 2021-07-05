@@ -4,6 +4,7 @@ import br.com.zup.anaminadakis.proposta.biometria.model.Biometria;
 import br.com.zup.anaminadakis.proposta.bloqueio.model.Bloqueio;
 import br.com.zup.anaminadakis.proposta.cartao.status.StatusCartao;
 import br.com.zup.anaminadakis.proposta.novaproposta.model.Proposta;
+import br.com.zup.anaminadakis.proposta.viagem.model.Viagem;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,6 +34,9 @@ public class Cartao {
 
     @Enumerated(EnumType.STRING)
     private StatusCartao statusCartao = StatusCartao.ATIVO;
+
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+    private List<Viagem> avisosViagem = new ArrayList<>();
 
     @Deprecated
     public Cartao() {
