@@ -3,7 +3,9 @@ package br.com.zup.anaminadakis.proposta.cartao.feign;
 
 import br.com.zup.anaminadakis.proposta.bloqueio.dto.InformaStatusCartao;
 import br.com.zup.anaminadakis.proposta.bloqueio.request.BloqueioRequest;
+import br.com.zup.anaminadakis.proposta.carteira.dto.ResultadoCarteira;
 import br.com.zup.anaminadakis.proposta.cartao.request.CartaoRequest;
+import br.com.zup.anaminadakis.proposta.carteira.request.CarteiraRequest;
 import br.com.zup.anaminadakis.proposta.viagem.dto.ResultadoAvisoViagem;
 import br.com.zup.anaminadakis.proposta.viagem.request.ViagemRequest;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -22,4 +24,7 @@ public interface CartaoFeign {
 
     @PostMapping("${avisos.cartoes}")
     public ResultadoAvisoViagem notificaViagem(@PathVariable String id, @RequestBody ViagemRequest request);
+
+    @PostMapping("${proposta.service.carteira}")
+    public ResultadoCarteira associaCarteira(@PathVariable String id, @RequestBody CarteiraRequest request);
 }

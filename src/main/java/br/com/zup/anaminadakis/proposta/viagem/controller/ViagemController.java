@@ -30,7 +30,8 @@ public class ViagemController {
     CartaoFeign cartaoFeign;
 
     @PostMapping("/{cartao}")
-    public ResponseEntity<?> cadastraAvisoDeViagem(@PathVariable String cartao, @RequestBody @Valid ViagemRequest viagemRequest,
+    public ResponseEntity<?> cadastraAvisoDeViagem(@PathVariable String cartao,
+                                                   @RequestBody @Valid ViagemRequest viagemRequest,
                                                    HttpServletRequest http) {
 
         Optional<Cartao> cartaoViagem = cartaoRepository.findByNumeroCartao(cartao);
@@ -53,7 +54,7 @@ public class ViagemController {
             viagemRepository.save(avisoViagem);
             return ResponseEntity.status(200).build();
 
-        } catch ( FeignException error) {
+        } catch (FeignException error) {
             error.printStackTrace();
             return ResponseEntity.status(422).body("Não foi possível realizar a notificação de viagem.");
         }

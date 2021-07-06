@@ -3,6 +3,7 @@ package br.com.zup.anaminadakis.proposta.cartao.model;
 import br.com.zup.anaminadakis.proposta.biometria.model.Biometria;
 import br.com.zup.anaminadakis.proposta.bloqueio.model.Bloqueio;
 import br.com.zup.anaminadakis.proposta.cartao.status.StatusCartao;
+import br.com.zup.anaminadakis.proposta.carteira.model.Carteira;
 import br.com.zup.anaminadakis.proposta.novaproposta.model.Proposta;
 import br.com.zup.anaminadakis.proposta.viagem.model.Viagem;
 
@@ -38,6 +39,9 @@ public class Cartao {
     @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
     private List<Viagem> avisosViagem = new ArrayList<>();
 
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+    private List<Carteira> carteiras;
+
     @Deprecated
     public Cartao() {
     }
@@ -71,7 +75,6 @@ public class Cartao {
         this.statusCartao = StatusCartao.BLOQUEADO;
         addBloqueio(new Bloqueio(ipAddress, userAgent, this));
     }
-
 
     public boolean estaBloqueado() {
         return statusCartao.equals(StatusCartao.BLOQUEADO);
