@@ -12,6 +12,8 @@ import br.com.zup.anaminadakis.proposta.novaproposta.swagger.ConsultaSwagger;
 import br.com.zup.anaminadakis.proposta.validacoes.ApiErroException;
 import br.com.zup.anaminadakis.proposta.validacoes.TratamentoDeErro;
 import feign.FeignException;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +37,15 @@ public class PropostaController {
     @Autowired
     MetricasPropostas metricasPropostas;
 
+    @Autowired
+    Tracer tracer;
+
     @PostMapping
     public ResponseEntity<PropostaRequest> cadastro(@RequestBody @Valid PropostaRequest propostaRequest, UriComponentsBuilder uriBuilder) {
-    //caso o documento exista, vai jogar uma exceção
+
+        Span activeSpan = tracer.activeSpan();
+
+        //caso o documento exista, vai jogar uma exceção
         if (documentoExistente(propostaRequest.getDocumento())) {
             throw new ApiErroException(HttpStatus.UNPROCESSABLE_ENTITY, "Não é permitido mais de uma proposta por CPF/CNPJ");
         }
@@ -45,6 +53,7 @@ public class PropostaController {
         Proposta proposta = propostaRequest.converte();
         propostaRepository.save(proposta);
         metricasPropostas.incrementa();
+        activeSpan.setBaggageItem("user.email", proposta.getEmail());
 
         //analisa a proposta para torná-la elegível ou não, em caso de restrições
         AnalisePropostaRequest analisePropostaRequest = new AnalisePropostaRequest(proposta.getDocumento(),
