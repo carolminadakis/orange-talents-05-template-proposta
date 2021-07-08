@@ -2,6 +2,7 @@ package br.com.zup.anaminadakis.proposta.novaproposta.model;
 
 import br.com.zup.anaminadakis.proposta.cartao.model.Cartao;
 import br.com.zup.anaminadakis.proposta.novaproposta.dto.StatusProposta;
+import br.com.zup.anaminadakis.proposta.seguranca.CriptografaDocumentos;
 import br.com.zup.anaminadakis.proposta.validacoes.CPFouCNPJ;
 import com.sun.istack.NotNull;
 
@@ -27,6 +28,7 @@ public class Proposta {
 
     @NotBlank
     @CPFouCNPJ
+    @Convert(converter = CriptografaDocumentos.class)
     @Column(nullable = false)
     private String documento;
 
